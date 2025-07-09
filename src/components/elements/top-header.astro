@@ -1,0 +1,56 @@
+---
+import Search01 from "@/assets/svgs/search-01.astro";
+import MenuDropdown from "./menu-dropdown.astro";
+import { SITE } from "@/lib/config";
+import ThemeController from "../bases/theme-controller.astro";
+---
+
+<div
+  class="navbar border-b border-primary-content/80 dark:border-primary-content/20"
+>
+  <div class="navbar-start lg:w-1/2">
+    <MenuDropdown />
+    <a class="text-xl px-2 text-nowrap lg:hidden" href="/">{SITE.title}</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <a class="text-xl px-2" href="/">{SITE.title}</a>
+  </div>
+  <div class="navbar-end">
+    <ThemeController />
+    <a class="btn btn-ghost btn-circle" href="/search" aria-label="Search">
+      <Search01 />
+    </a>
+    <a
+      class="btn ml-2 login-btn"
+      href="/signin"
+      style="background:#FFFFFF;color:#422AD5;display:none;">Login</a
+    >
+    <a
+      class="btn ml-2 signup-btn"
+      href="/register"
+      style="background:#422AD5;color:#FFFFFF;display:none;">Signup</a
+    >
+    <form action="/api/auth/signout" method="get" style="display:inline;">
+      <button
+        type="submit"
+        class="btn ml-2 logout-btn"
+        style="background:#FF0000;color:#FFF;display:none;">Logout</button
+      >
+    </form>
+    <script is:inline>
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
+      const isLoggedIn =
+        getCookie("sb-access-token") && getCookie("sb-refresh-token");
+      if (isLoggedIn) {
+        document.querySelector(".logout-btn").style.display = "inline-block";
+      } else {
+        document.querySelector(".login-btn").style.display = "inline-block";
+        document.querySelector(".signup-btn").style.display = "inline-block";
+      }
+    </script>
+  </div>
+</div>

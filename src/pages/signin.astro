@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/base.astro";
+import { parse } from "cookie";
+import { getEntry } from "astro:content";
+
+const cookieHeader = Astro.request.headers.get("cookie") || "";
+const cookies = parse(cookieHeader);
+const flashMessage = cookies.flash;
+
+const entry = await getEntry("views", "signin");
+
+if (!entry) {
+    return Astro.redirect("/404");
+}
+---
+
+<BaseLayout entry={entry}>
+    <div class="max-w-md mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Login</h1>
+
+        {
+            flashMessage && (
+                <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
+                    {flashMessage}
+                </div>
+            )
+        }
+
+        <form method="POST" action="/api/auth/signin" class="space-y-4">
+            <div>
+                <label for="email" class="block text-sm font-medium"
+                    >Email</label
+                >
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    class="w-full border rounded px-3 py-2"
+                />
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium"
+                    >Password</label
+                >
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    class="w-full border rounded px-3 py-2"
+                />
+            </div>
+
+            <button
+                type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+                Login
+            </button>
+        </form>
+    </div>
+</BaseLayout>

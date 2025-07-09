@@ -1,0 +1,23 @@
+---
+import BaseLayout from "@/layouts/base.astro";
+import { getEntry } from "astro:content";
+import ContentLayout from "@/layouts/content.astro";
+
+const entry = await getEntry("views", "register");
+
+if (!entry) {
+    return Astro.redirect("/404");
+}
+---
+
+<BaseLayout entry={entry}>
+    <ContentLayout>
+        <form action="/api/auth/register" method="POST">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" />
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" />
+            <button type="submit">Register</button>
+        </form>
+    </ContentLayout>
+</BaseLayout>

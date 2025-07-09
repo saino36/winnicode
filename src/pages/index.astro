@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@/layouts/base.astro";
+import { getEntry } from "astro:content";
+import Headlines from "@/pages/_home/headlines.astro";
+import LatestNews from "@/pages/_home/latestNews.astro";
+import Authors from "@/pages/_home/authors.astro";
+import CategorySection from "@/pages/_home/categorySection.astro";
+
+const entry = await getEntry("views", "home");
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+---
+
+<BaseLayout entry={entry}>
+  <Headlines />
+  <LatestNews />
+  <CategorySection categoryId="teknologi" title="Teknologi" />
+  <CategorySection categoryId="politik" title="Politik" />
+  <CategorySection categoryId="olahraga" title="Olahraga" />
+  <CategorySection categoryId="seni" title="Seni" />
+  <CategorySection categoryId="otomotif" title="Otomotif" />
+  <Authors />
+</BaseLayout>

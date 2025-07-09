@@ -1,0 +1,27 @@
+---
+import NewsCard from "@/components/cards/newsCard.astro";
+import HeaderSection from "./headerSection.astro";
+import { categoriesHandler } from "@/lib/handlers/categories";
+
+const { categoryId, title } = Astro.props;
+const category = categoriesHandler.oneCategory(categoryId);
+const articles =
+  categoriesHandler
+    .allCategoriesWithLatestArticles()
+    .find((cat) => cat.id === categoryId)?.data.latestArticles || [];
+---
+
+<section class="container pt-12 pb-0 space-y-4" data-pagefind-ignore="all">
+  <HeaderSection
+    title={title}
+    link_title="Lihat Semua"
+    link_url={`/categories/${category.data.path}/1`}
+  />
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-6">
+    {
+      articles.map((article, index) => (
+        <NewsCard article={article} index={index} />
+      ))
+    }
+  </div>
+</section>
